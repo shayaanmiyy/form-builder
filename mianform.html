@@ -1,0 +1,50 @@
+<style>
+    .inputeditable {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAAdgAAAHYBTnsmCAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAADsSURBVDiNtdK9LoRBFMbx39q3UmjEIiKxl+ASNnsPCpVEbKFS6VyEapO9ANVGI7qNVVFtSHz0JBJbISpCopiZRszrRZxq5szz/OecM8PPYxYjXGCx+IV5iBMc47DAFFYwnTE9o4sGjrCHtXj2UuAAt7jLAOqYwwC76MX8KlrwiFpJ2Q2h3824X8c15pPg4S/mMkDOvPC54hzgHJ247uBKeIVtbCRR7hmXhOH14s1baGOMSbx+B1jGDC7xJkx7/JUwBzgVeh/hJqMpBdxjv8yYYqKK6N8B78JXrRI1NPGUEgV2hA9Trwg4Qz8lPgAqLy52gJQwGQAAAABJRU5ErkJggg==);
+        background-repeat: no-repeat;
+        background-size: 16px;
+        background-position: 99% 6px;
+        cursor: pointer;
+    }
+
+    input[disabled] {
+        border: 2px solid #727272;
+        background: #e0dddda6;
+    }
+
+    .sub-input-label {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<script>
+    addHyphens(this)
+
+    this.value = this.value.toUpperCase();
+
+
+    function changeInput(selector, target) {
+        const input = document.querySelector(selector);
+        document.querySelector(target).innerText = input.disabled ? "Enabled" : "Disabled";
+        input.disabled = !input.disabled;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var inputs = document.querySelectorAll(".idi");
+        inputs.forEach(function (input) {
+            if (input.nextElementSibling == null) {
+                input.disabled = true;
+                var html = '<div class="inputeditable">Disabled</div>';
+                input.insertAdjacentHTML('afterend', html);
+            }
+        });
+        document.querySelectorAll(".inputeditable").forEach(function (editable) {
+            editable.addEventListener('click', function () {
+                var input = this.previousElementSibling; // Get the input field before the clicked element
+                input.disabled = !input.disabled; // Toggle the disabled attribute
+                this.innerText = input.disabled ? "Disabled" : "Enabled"; // Toggle inner text
+            });
+        });
+    });
+</script>

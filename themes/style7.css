@@ -1,0 +1,695 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600,700|Source+Sans+Pro:400,600,700&display=swap");
+
+body {
+    background: #ddeefc;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+.container {
+
+    padding: 50px 15px;
+}
+
+@media screen and (max-width: 700px),
+(max-height: 500px) {}
+
+.my-form .rendered-form {
+    background: #fff;
+    box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
+    border-radius: 10px;
+    padding: 35px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form>.rendered-form {
+        padding: 25px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form>.rendered-form {
+        padding: 15px;
+    }
+}
+
+.my-form>row {
+    display: flex;
+    align-items: flex-start;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form>row {
+        flex-wrap: wrap;
+    }
+}
+
+.my-form>col {
+    flex: auto;
+    margin-right: 35px;
+}
+
+.my-form>col:last-child {
+    margin-right: 0;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form>col {
+        margin-right: 0;
+        flex: unset;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .my-form>col:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.my-form>col.-cvv {
+    max-width: 150px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form>col.-cvv {
+        max-width: initial;
+    }
+}
+
+.my-form>group {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.my-form>group .my-form>input {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.my-form>group .my-form>input:last-child {
+    margin-right: 0;
+}
+
+.my-form>button {
+    width: 100%;
+    height: 55px;
+    background: #2364d2;
+    border: none;
+    border-radius: 5px;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: "Source Sans Pro", sans-serif;
+    box-shadow: 3px 10px 20px 0px rgba(35, 100, 210, 0.3);
+    color: #fff;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form>button {
+        margin-top: 10px;
+    }
+}
+
+.card-item {
+    max-width: 430px;
+    height: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+    .card-item {
+        max-width: 310px;
+        height: 220px;
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .card-item {
+        height: 180px;
+    }
+}
+
+.card-item.-active .my-form > side.-front {
+    transform: perspective(1000px) rotateY(180deg) rotateX(0deg) rotateZ(0deg);
+}
+
+.card-item.-active .my-form > side.-back {
+    transform: perspective(1000px) rotateY(0) rotateX(0deg) rotateZ(0deg);
+}
+
+.my-form > focus {
+    position: absolute;
+    z-index: 3;
+    border-radius: 5px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.35s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.65);
+}
+
+.my-form > focus:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #08142f;
+    height: 100%;
+    border-radius: 5px;
+    filter: blur(25px);
+    opacity: 0.5;
+}
+
+.my-form > focus.-active {
+    opacity: 1;
+}
+
+.my-form > side {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px 0 rgba(14, 42, 90, 0.55);
+    transform: perspective(2000px) rotateY(0deg) rotateX(0deg) rotate(0deg);
+    transform-style: preserve-3d;
+    transition: all 0.8s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    backface-visibility: hidden;
+    height: 100%;
+}
+
+.my-form > side.-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: perspective(2000px) rotateY(-180deg) rotateX(0deg) rotate(0deg);
+    z-index: 2;
+    padding: 0;
+    height: 100%;
+}
+
+.my-form > side.-back .my-form > cover {
+    transform: rotateY(-180deg);
+}
+
+.my-form > bg {
+    max-width: 100%;
+    display: block;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.my-form > cover {
+    height: 100%;
+    background-color: #1c1d27;
+    position: absolute;
+    height: 100%;
+    background-color: #1c1d27;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.my-form > cover:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(6, 2, 29, 0.45);
+}
+
+.my-form > top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding: 0 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > top {
+        margin-bottom: 25px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > top {
+        margin-bottom: 15px;
+    }
+}
+
+.my-form > chip {
+    width: 60px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > chip {
+        width: 50px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > chip {
+        width: 40px;
+    }
+}
+
+.my-form > type {
+    height: 45px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    max-width: 100px;
+    margin-left: auto;
+    width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > type {
+        height: 40px;
+        max-width: 90px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > type {
+        height: 30px;
+    }
+}
+
+.my-form > typeImg {
+    max-width: 100%;
+    object-fit: contain;
+    max-height: 100%;
+    object-position: top right;
+}
+
+.my-form > info {
+    color: #fff;
+    width: 100%;
+    max-width: calc(100% - 85px);
+    padding: 10px 15px;
+    font-weight: 500;
+    display: block;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > info {
+        padding: 10px;
+    }
+}
+
+.my-form > holder {
+    opacity: 0.7;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > holder {
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+}
+
+.my-form > wrapper {
+    font-family: "Source Code Pro", monospace;
+    padding: 25px 15px;
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
+    user-select: none;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > wrapper {
+        padding: 20px 10px;
+    }
+}
+
+.my-form > name {
+    font-size: 18px;
+    line-height: 1;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > name {
+        font-size: 16px;
+    }
+}
+
+.my-form > nameItem {
+    display: inline-block;
+    min-width: 8px;
+    position: relative;
+}
+
+.my-form > number {
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
+    font-size: 27px;
+    margin-bottom: 35px;
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > number {
+        font-size: 21px;
+        margin-bottom: 15px;
+        padding: 10px 10px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > number {
+        font-size: 19px;
+        margin-bottom: 10px;
+        padding: 10px 10px;
+    }
+}
+
+.my-form > numberItem {
+    width: 16px;
+    display: inline-block;
+}
+
+.my-form > numberItem.-active {
+    width: 30px;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > numberItem {
+        width: 13px;
+    }
+
+    .my-form > numberItem.-active {
+        width: 16px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > numberItem {
+        width: 12px;
+    }
+
+    .my-form > numberItem.-active {
+        width: 8px;
+    }
+}
+
+.my-form > content {
+    color: #fff;
+    display: flex;
+    align-items: flex-start;
+}
+
+.my-form > date {
+    flex-wrap: wrap;
+    font-size: 18px;
+    margin-left: auto;
+    padding: 10px;
+    display: inline-flex;
+    width: 80px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > date {
+        font-size: 16px;
+    }
+}
+
+.my-form > dateItem {
+    position: relative;
+}
+
+.my-form > dateItem span {
+    width: 22px;
+    display: inline-block;
+}
+
+.my-form > dateTitle {
+    opacity: 0.7;
+    font-size: 13px;
+    padding-bottom: 6px;
+    width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > dateTitle {
+        font-size: 12px;
+        padding-bottom: 5px;
+    }
+}
+
+.my-form > band {
+    background: rgba(0, 0, 19, 0.8);
+    width: 100%;
+    height: 50px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > band {
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > band {
+        height: 40px;
+        margin-top: 10px;
+    }
+}
+
+.my-form > cvv {
+    text-align: right;
+    position: relative;
+    z-index: 2;
+    padding: 15px;
+}
+
+.my-form > cvv .my-form > type {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > cvv {
+        padding: 10px 15px;
+    }
+}
+
+.my-form > cvvTitle {
+    padding-right: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.my-form > cvvBand {
+    height: 45px;
+    background: #fff;
+    margin-bottom: 30px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    color: #1a3b5d;
+    font-size: 18px;
+    border-radius: 4px;
+    box-shadow: 0px 10px 20px -7px rgba(32, 56, 117, 0.35);
+}
+
+@media screen and (max-width: 480px) {
+    .my-form > cvvBand {
+        height: 40px;
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .my-form > cvvBand {
+        margin-bottom: 15px;
+    }
+}
+
+.card-list {
+    margin-bottom: -130px;
+}
+
+@media screen and (max-width: 480px) {
+    .card-list {
+        margin-bottom: -120px;
+    }
+}
+
+.card-input {
+    margin-bottom: 20px;
+}
+
+.my-form>label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #1a3b5d;
+    width: 100%;
+    display: block;
+    user-select: none;
+}
+
+.my-form>input {
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: 1px solid #ced6e0;
+    transition: all 0.3s ease-in-out;
+    font-size: 18px;
+    padding: 5px 15px;
+    background: none;
+    color: #1a3b5d;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.my-form>input:hover,
+.my-form>input:focus {
+    border-color: #3d9cff;
+}
+
+.my-form>input:focus {
+    box-shadow: 0px 10px 20px -13px rgba(32, 56, 117, 0.35);
+}
+
+.my-form>input,
+.my-form select {
+    -webkit-appearance: none;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAeCAYAAABuUU38AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUxJREFUeNrM1sEJwkAQBdCsngXPHsQO9O5FS7AAMVYgdqAd2IGCDWgFnryLFQiCZ8EGnJUNimiyM/tnk4HNEAg/8y6ZmMRVqz9eUJvRaSbvutCZ347bXVJy/ZnvTmdJ862Me+hAbZCTs6GHpyUi1tTSvPnqTpoWZPUa7W7ncT3vK4h4zVejy8QzM3WhVUO8ykI6jOxoGA4ig3BLHcNFSCGqGAkig2yqgpEiMsjSfY9LxYQg7L6r0X6wS29YJiYQYecemY+wHrXD1+bklGhpAhBDeu/JfIVGxaAQ9sb8CI+CQSJ+QmJg0Ii/EE2MBiIXooHRQhRCkBhNhBcEhLkwf05ZCG8ICCOpk0MULmvDSY2M8UawIRExLIQIEgHDRoghihgRIgiigBEjgiFATBACAgFgghEwSAAGgoBCBBgYAg5hYKAIFYgHBo6w9RRgAFfy160QuV8NAAAAAElFTkSuQmCC');
+    background-size: 12px;
+    background-position: 97.9% center;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+}
+
+.slide-fade-up-enter-active {
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+    position: relative;
+}
+
+.slide-fade-up-leave-active {
+    transition: all 0.25s ease-in-out;
+    position: absolute;
+}
+
+.slide-fade-up-enter {
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+}
+
+.slide-fade-up-leave-to {
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+.slide-fade-right-enter-active {
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+    position: relative;
+}
+
+.slide-fade-right-leave-active {
+    transition: all 0.25s ease-in-out;
+    position: absolute;
+}
+
+.slide-fade-right-enter {
+    opacity: 0;
+    transform: translateX(10px) rotate(45deg);
+    pointer-events: none;
+}
+
+.slide-fade-right-leave-to {
+    opacity: 0;
+    transform: translateX(-10px) rotate(45deg);
+    pointer-events: none;
+}
+
+.github-btn {
+    position: absolute;
+    right: 40px;
+    bottom: 50px;
+    text-decoration: none;
+    padding: 15px 25px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 30px -6px rgba(36, 52, 70, 0.65);
+    background: #24292e;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+@media screen and (min-width: 500px) {
+    .github-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 17px 20px -6px rgba(36, 52, 70, 0.36);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .github-btn {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin-top: 20px;
+    }
+
+    .github-btn:active {
+        transform: scale(1.1);
+        box-shadow: 0px 17px 20px -6px rgba(36, 52, 70, 0.36);
+    }
+}

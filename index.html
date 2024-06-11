@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Drag and Drop Form Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/formbuilder/0.2.1/formbuilder-min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+        body {
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-theme {
+            background-color: #222;
+            color: #fff;
+        }
+
+        .dark-theme .form-wrap.form-builder .frmb-control li {
+            background: unset;
+        }
+
+        .dark-theme .form-wrap.form-builder .frmb-control li:hover {
+            background-color: #666;
+        }
+
+        .dark-theme label {
+            color: #000;
+        }
+
+        .dark-theme .form-wrap.form-builder .frmb li.form-field {
+            background-color: #303030;
+        }
+
+        .dark-theme .form-wrap.form-builder .frmb .field-label,
+        .dark-theme .form-wrap.form-builder .frmb .legend {
+            color: #e9ecef;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            z-index: 999;
+        }
+
+        .form-wrap.form-builder {
+            padding-right: 10px;
+        }
+
+        .get-data {
+            background: #727272;
+            color: #000 !important;
+            border-radius: 6px !important;
+            margin-left: 12px !important;
+        }
+
+        .save-template {
+            display: none !important;
+        }
+
+        .dark-theme .btn.btn-default.get-data {
+            color: #fff !important;
+        }
+
+        .dark-theme>.form-builder-dialog {
+            color: #000 !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #cac9c9;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #6c757d;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+
+</head>
+
+<body class="">
+
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle">Dark Mode</label>
+    </div>
+
+
+    <section class="row p-5 pb-2 mx-auto" style="max-width: 1900px;">
+        <div class="col-lg-6 p-1">
+            <div class="border shadow p-3 ">
+                <div class="row align-items-center justify-content-between">
+                    <h1 class="h1 col-4 m-0">Form Builder</h1>
+                    <div class="col-8 d-flex gap-1 align-items-center justify-content-end">
+                        <select class="form-select" aria-label="Default select example"
+                            onchange="changeDesign(this.value)" style="max-width: 250px">
+                            <option selected>Select Design</option>
+                            <option value="http://127.0.0.1:5501/themes/style1.css">Style 1</option>
+                            <option value="http://127.0.0.1:5501/themes/style2.css">Style 2</option>
+                            <option value="http://127.0.0.1:5501/themes/style3.css">Style 3</option>
+                            <option value="http://127.0.0.1:5501/themes/style4.css">Style 4</option>
+                            <option value="http://127.0.0.1:5501/themes/style5.css">Style 5</option>
+                            <option value="http://127.0.0.1:5501/themes/style6.css">Style 6</option>
+                            <option value="http://127.0.0.1:5501/themes/style7.css">Style 7</option>
+                        </select>
+                        <button onclick="renderForm()" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i>
+                            Render Form</button>
+                    </div>
+                </div>
+                <hr>
+                <div id="form-builder" class="" style="max-height: 650px;     overflow-y: scroll;"></div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-6 p-1">
+            <div class="border shadow p-3">
+
+                <div class="row align-items-center justify-content-between">
+                    <h1 class="h1 col-6 m-0">Form Preview</h1>
+                    <div class="col-6 d-flex gap-1 align-items-center justify-content-end">
+                        <button onclick="saveRendered()" class="btn btn-success btn-sm"><i
+                                class="fa-regular fa-floppy-disk"></i> Save</button>
+                        <button onclick="copyHtml()" class="btn btn-primary btn-sm"><i class="fa-regular fa-copy"></i>
+                            Copy HTML</button>
+                    </div>
+                </div>
+                <hr>
+                <div id="form-preview-render" class="my-form d-none"></div>
+                <iframe id="form-preview" class="my-form rounded shadow border rounded" width="100%"
+                    height="650"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <div class="row mt-0 p-5 pt-2 mx-auto gap-2" style="max-width: 1900px;">
+        <div class="col border rounded p-2 mt-0">
+            <h4><i class="fa-brands fa-css3-alt"></i> Add Custom Styles </h4>
+            <hr>
+            <textarea name="" id="customStyle" style="width: 100%;" rows="10"></textarea>
+        </div>
+        <div class="col border rounded p-2 mt-0">
+            <h4><i class="fa-brands fa-js"></i> Add Custom Script </h4>
+            <hr>
+            <textarea name="" id="customScript" style="width: 100%;" rows="10"></textarea>
+        </div>
+        <div class="col border rounded p-2 mt-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="m-0"><i class="fa-solid fa-code"></i> Add Custom JSON</h4>
+                <button class="btn btn-secondary btn-sm" onclick="renderJson()"><i class="fa-regular fa-file-code"></i>
+                    Render JSON</button>
+            </div>
+            <hr class="">
+            <textarea name="" id="customJson" style="width: 100%;" rows="10"></textarea>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="/form-builder/form-render.min.js"></script>
+    <script src="/form-builder/form-builder.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        // Default field configurations
+        let defaultFields =
+            [
+                {
+                    "type": "header",
+                    "subtype": "h4",
+                    "label": "Form Name",
+                    "access": false
+                },
+                {
+                    "type": "header",
+                    "subtype": "h2",
+                    "label": "Profile Forms",
+                    "className": "mb-3 border-bottom pb-2",
+                    "access": false
+                },
+                {
+                    "type": "select",
+                    "required": true,
+                    "label": "Form Type",
+                    "className": "form-control",
+                    "name": "registration-type",
+                    "access": false,
+                    "multiple": false,
+                    "values": [
+                        {
+                            "label": "Option 1",
+                            "value": "option-1",
+                            "selected": true
+                        },
+                        {
+                            "label": "Option 2",
+                            "value": "option-2",
+                            "selected": false
+                        },
+                        {
+                            "label": "Option 3",
+                            "value": "option-3",
+                            "selected": false
+                        }
+                    ]
+                },
+                {
+                    "type": "text",
+                    "required": true,
+                    "label": "Enter Your Profile Number",
+                    "className": "form-control idi",
+                    "name": "profilenumber",
+                    "access": false,
+                    "subtype": "text"
+                },
+                {
+                    "type": "date",
+                    "required": true,
+                    "label": "Enter Joining Data",
+                    "className": "form-control",
+                    "name": "profiledate",
+                    "access": false,
+                    "subtype": "date"
+                },
+                {
+                    "type": "text",
+                    "required": true,
+                    "label": "Profile Type",
+                    "className": "form-control",
+                    "name": "business-type",
+                    "access": false,
+                    "subtype": "text"
+                },
+                {
+                    "type": "select",
+                    "required": true,
+                    "label": "Profile Options",
+                    "className": "form-control",
+                    "name": "select-1715835431082-0",
+                    "access": false,
+                    "multiple": false,
+                    "values": [
+                        {
+                            "label": "Option 1",
+                            "value": "option-1",
+                            "selected": true
+                        },
+                        {
+                            "label": "Option 2",
+                            "value": "option-2",
+                            "selected": false
+                        },
+                        {
+                            "label": "Option 3",
+                            "value": "option-3",
+                            "selected": false
+                        }
+                    ]
+                },
+                {
+                    "type": "text",
+                    "required": true,
+                    "label": "Phone Number",
+                    "className": "form-control",
+                    "name": "gst",
+                    "access": false,
+                    "subtype": "text"
+                },
+                {
+                    "type": "text",
+                    "required": true,
+                    "label": "Document Number",
+                    "className": "form-control idi",
+                    "name": "pan",
+                    "access": false,
+                    "subtype": "text"
+                },
+                {
+                    "type": "text",
+                    "subtype": "email",
+                    "required": true,
+                    "label": "Email",
+                    "className": "form-control",
+                    "name": "email",
+                    "access": false
+                },
+                {
+                    "type": "number",
+                    "required": false,
+                    "label": "Phone Number",
+                    "className": "form-control",
+                    "name": "phone",
+                    "access": false,
+                    "subtype": "number"
+                },
+                {
+                    "type": "button",
+                    "subtype": "submit",
+                    "label": "Submit",
+                    "className": "btn-success btn mx-auto btn-lg",
+                    "name": "submit",
+                    "access": false,
+                    "style": "success"
+                }
+            ]
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        let rend;
+        let customStyle;
+        let customScript
+        let customJson
+
+        let frm = $("#form-builder").formBuilder({
+            controlPosition: 'right',
+            formData: defaultFields
+        });
+
+        function renderJson() {
+            customJson = document.getElementById('customJson').value;
+            if (customJson.trim() == '') {
+                return Swal.fire({
+                    title: "No Custom Json",
+                    text: "Custom JSON is Empty please add",
+                    icon: "error"
+                });
+            }
+            $('#form-builder').empty();
+            frm = $("#form-builder").formBuilder({
+                controlPosition: 'right',
+                formData: customJson
+            });
+        }
+
+        function renderForm() {
+
+            customScript = document.getElementById('customScript').value;
+            customStyle = document.getElementById('customStyle').value;
+
+            $('#form-preview').html()
+            rend = $("#form-preview-render").formRender(frm);
+            let ifHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>AntraWeb Form Builder</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        .rendered-form>div { margin: 20px 0; }
+                        input[type=radio] { width: auto; margin-right: 10px; }
+                        .formbuilder-radio { display: flex; align-items: center; }
+                        .formbuilder-radio label { margin: 0; }
+                        .formbuilder-required { color: red; margin-left: 6px}
+                        ${customStyle}
+                    </style>
+                    <script id="previewScript">${customScript} <\/script>             
+
+                    </head><body><div class="container mx-auto" style="max-width: 600px;">
+                    <form action="" onsubmit="return handleSubmit(event)" class="form my-form">`;
+            ifHtml += $("#form-preview-render").formRender("html");
+            ifHtml += `<!-- marker -->`
+            // ifHtml += "<\/form><\/div><\/body><\/html>";
+            document.getElementById("form-preview").contentWindow.document.open();
+            document.getElementById("form-preview").contentWindow.document.write(ifHtml);
+            document.getElementById("form-preview").contentWindow.document.close();
+        }
+
+        function copyHtml() {
+            const textarea = document.createElement('textarea');
+            textarea.value = $("#form-render").formRender('html');
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            return Swal.fire({
+                title: "Copied",
+                text: "HTML Copied to Clipboard",
+                icon: "success"
+            });
+        }
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                window.localStorage.setItem('darkmd', true);
+            } else {
+                window.localStorage.removeItem('darkmd', false);
+            }
+            $('body').toggleClass('dark-theme');
+        });
+
+        if (window.localStorage.getItem('darkmd')) {
+            $('body').toggleClass('dark-theme');
+            darkModeToggle.checked = true
+        }
+
+        function changeDesign(selectedValue) {
+            if (selectedValue !== "Select Design") {
+                const iframeDoc = document.getElementById('form-preview').contentWindow.document;
+                const existingCustomLinks = iframeDoc.querySelectorAll('link[rel="stylesheet"][href^="http://127.0.0.1:5501/themes/"]');
+                existingCustomLinks.forEach(link => link.remove());
+                if (selectedValue !== "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css") {
+                    const linkElement = iframeDoc.createElement('link');
+                    linkElement.rel = 'stylesheet';
+                    linkElement.href = selectedValue;
+                    iframeDoc.head.appendChild(linkElement);
+                }
+            }
+        }
+
+        function saveRendered() {
+            let iframeHtml = document.getElementById('form-preview').contentDocument.documentElement.outerHTML;
+
+            let markerIndex = iframeHtml.lastIndexOf('<!-- marker -->');
+            if (markerIndex !== -1) {
+                let htmlBeforeMarker = iframeHtml.slice(0, markerIndex);
+                let htmlAfterMarker = iframeHtml.slice(markerIndex);
+                let htmlWithJs = `${htmlBeforeMarker}<script src="http://127.0.0.1:5501/JS/api.js"><\/script>${htmlAfterMarker}`;
+                // htmlToJson(htmlWithJs);
+
+                // const myHeaders = new Headers();
+                // myHeaders.append("Content-Type", "application/json");
+                // myHeaders.append("Cookie", "ASP.NET_SessionId=4pexwk3veiircajjcsodrenl");
+
+                // const raw = encodeURIComponent(htmlWithJs);
+
+                // const requestOptions = {
+                //     method: "POST",
+                //     headers: myHeaders,
+                //     body: raw,
+                //     redirect: "follow"
+                // };
+
+                // fetch("http://localhost:57741/Antra_Process.aspx?ACTION=profile&DATA=", requestOptions)
+                //     .then((response) => response.text())
+                //     .then((result) => console.log(result))
+                //     .catch((error) => console.error(error));
+
+
+                let blob = new Blob([htmlWithJs], { type: 'text/html' });
+                let a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+                a.download = 'form-preview.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                console.error('Marker element not found. Falling back to original method.');
+            }
+        }
+
+        function htmlToJson(html) {
+            // Parse the provided HTML string
+            const htmlString = html; // Replace <your HTML> with the provided HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlString, 'text/html');
+
+            const formJson = [];
+
+            // Extract header
+            const headerElement = doc.querySelector('#control-2994388');
+            if (headerElement) {
+                formJson.push({
+                    type: 'header',
+                    subtype: 'h1',
+                    label: headerElement.textContent.trim(),
+                    className: 'mt-3 mb-2',
+                    access: false
+                });
+            }
+
+            // Extract paragraph
+            const paragraphElement = doc.querySelector('#control-2981002');
+            if (paragraphElement) {
+                formJson.push({
+                    type: 'paragraph',
+                    subtype: 'p',
+                    label: paragraphElement.textContent.trim(),
+                    className: 'mb-3 border-bottom pb-2',
+                    access: false
+                });
+            }
+
+            // Extract form fields
+            const formElements = doc.querySelectorAll('.formbuilder-text, .formbuilder-select, .formbuilder-date');
+            formElements.forEach(element => {
+                const fieldType = element.classList.contains('formbuilder-text') ? 'text' :
+                    element.classList.contains('formbuilder-select') ? 'select' :
+                        element.classList.contains('formbuilder-date') ? 'date' :
+                            '';
+
+                if (fieldType === 'text') {
+                    const fieldRequired = element.querySelector('.formbuilder-required') !== null;
+
+                    formJson.push({
+                        type: fieldType,
+                        subtype: 'text',
+                        required: fieldRequired,
+                        label: element.querySelector('.formbuilder-text-label').textContent.trim(),
+                        className: 'form-control',
+                        name: element.querySelector('input').getAttribute('name'),
+                        access: false
+                    });
+                } else if (fieldType === 'select') {
+                    const selectElement = element.querySelector('select');
+                    const fieldRequired = selectElement.required;
+
+                    const values = Array.from(selectElement.options).map(option => ({
+                        label: option.textContent.trim(),
+                        value: option.value,
+                        selected: option.selected
+                    }));
+
+                    formJson.push({
+                        type: fieldType,
+                        required: fieldRequired,
+                        label: element.querySelector('.formbuilder-select-label').textContent.trim(),
+                        className: 'form-control',
+                        name: selectElement.getAttribute('name'),
+                        access: false,
+                        multiple: false,
+                        values: values
+                    });
+                } else if (fieldType === 'date') {
+                    const fieldRequired = element.querySelector('.formbuilder-required') !== null;
+
+                    formJson.push({
+                        type: fieldType,
+                        subtype: 'date',
+                        required: fieldRequired,
+                        label: element.querySelector('.formbuilder-date-label').textContent.trim(),
+                        className: 'form-control',
+                        name: element.querySelector('input').getAttribute('name'),
+                        access: false
+                    });
+                }
+            });
+
+            // Extract button
+            const buttonElement = doc.querySelector('.formbuilder-button');
+            if (buttonElement) {
+                formJson.push({
+                    type: 'button',
+                    subtype: 'submit',
+                    label: buttonElement.querySelector('button').textContent.trim(),
+                    className: 'btn-primary btn',
+                    name: buttonElement.querySelector('button').getAttribute('name'),
+                    access: false,
+                    style: 'primary'
+                });
+            }
+
+            console.log(JSON.stringify(formJson, null, 2));
+
+
+        }
+
+        // window.addEventListener('beforeunload', function (event) {
+        //     event.preventDefault();
+        //     event.returnValue = '';
+        //     var confirmationMessage = 'Are you sure you want to leave? Your changes may not be saved.';
+        //     (event || window.event).returnValue = confirmationMessage;
+        //     return confirmationMessage;
+        // });
+    </script>
+
+</body>
+
+</html>

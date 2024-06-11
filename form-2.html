@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/themes/style4.css">
+
+    <style>
+        .rendered-form>div {
+            margin: 20px 0;
+        }
+
+        input[type=radio] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .formbuilder-radio {
+            display: flex;
+            align-items: center;
+        }
+
+        .formbuilder-radio label {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mx-auto" style="max-width: 600px;">
+        <form action="" onsubmit="return handleSubmit(event)" class="form my-form">
+
+            <div class="rendered-form formbuilder-embedded-bootstrap">
+                <div class="">
+                    <h1 id="control-9192359">Header</h1>
+                </div>
+                <div class="formbuilder-text form-group field-text-1714481354696-0"><label for="text-1714481354696-0"
+                        class="formbuilder-text-label">Text Field</label><input type="text" class="form-control"
+                        name="text-1714481354696-0" id="text-1714481354696-0"></div>
+                <div class="formbuilder-text form-group field-text-1714481365480"><label for="text-1714481365480"
+                        class="formbuilder-text-label">Text Field</label><input type="text" class="form-control"
+                        name="text-1714481365480" id="text-1714481365480"></div>
+                <div class="formbuilder-text form-group field-text-1714481365152"><label for="text-1714481365152"
+                        class="formbuilder-text-label">Text Field</label><input type="text" class="form-control"
+                        name="text-1714481365152" id="text-1714481365152"></div>
+                <div class="formbuilder-text form-group field-text-1714481364992"><label for="text-1714481364992"
+                        class="formbuilder-text-label">Text Field</label><input type="text" class="form-control"
+                        name="text-1714481364992" id="text-1714481364992"></div>
+                <div class="formbuilder-date form-group field-date-1714481376604-0"><label for="date-1714481376604-0"
+                        class="formbuilder-date-label">Date Field</label><input type="date" class="form-control"
+                        name="date-1714481376604-0" id="date-1714481376604-0"></div>
+                <div class="formbuilder-date form-group field-date-1714481368809-0"><label for="date-1714481368809-0"
+                        class="formbuilder-date-label">Date Field</label><input type="date" class="form-control"
+                        name="date-1714481368809-0" id="date-1714481368809-0"></div>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            let jsonObject = {};
+            formData.forEach((value, key) => {
+                jsonObject[key] = value;
+            });
+            console.log(jsonObject)
+        }
+    </script>
+</body>
+
+</html>
