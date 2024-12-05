@@ -111,13 +111,13 @@
                         <select class="form-select" aria-label="Default select example"
                             onchange="changeDesign(this.value)" style="max-width: 250px">
                             <option selected>Select Design</option>
-                            <option value="http://127.0.0.1:5501/themes/style1.css">Style 1</option>
-                            <option value="http://127.0.0.1:5501/themes/style2.css">Style 2</option>
-                            <option value="http://127.0.0.1:5501/themes/style3.css">Style 3</option>
-                            <option value="http://127.0.0.1:5501/themes/style4.css">Style 4</option>
-                            <option value="http://127.0.0.1:5501/themes/style5.css">Style 5</option>
-                            <option value="http://127.0.0.1:5501/themes/style6.css">Style 6</option>
-                            <option value="http://127.0.0.1:5501/themes/style7.css">Style 7</option>
+                            <option value="/themes/style1.css">Style 1</option>
+                            <option value="/themes/style2.css">Style 2</option>
+                            <option value="/themes/style3.css">Style 3</option>
+                            <option value="/themes/style4.css">Style 4</option>
+                            <option value="/themes/style5.css">Style 5</option>
+                            <option value="/themes/style6.css">Style 6</option>
+                            <option value="/themes/style7.css">Style 7</option>
                         </select>
                         <button onclick="renderForm()" class="btn btn-secondary"><i class="fa-solid fa-rotate"></i>
                             Render Form</button>
@@ -410,7 +410,7 @@
         function changeDesign(selectedValue) {
             if (selectedValue !== "Select Design") {
                 const iframeDoc = document.getElementById('form-preview').contentWindow.document;
-                const existingCustomLinks = iframeDoc.querySelectorAll('link[rel="stylesheet"][href^="http://127.0.0.1:5501/themes/"]');
+                const existingCustomLinks = iframeDoc.querySelectorAll('link[rel="stylesheet"][href^="/themes/"]');
                 existingCustomLinks.forEach(link => link.remove());
                 if (selectedValue !== "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css") {
                     const linkElement = iframeDoc.createElement('link');
@@ -428,7 +428,7 @@
             if (markerIndex !== -1) {
                 let htmlBeforeMarker = iframeHtml.slice(0, markerIndex);
                 let htmlAfterMarker = iframeHtml.slice(markerIndex);
-                let htmlWithJs = `${htmlBeforeMarker}<script src="http://127.0.0.1:5501/JS/api.js"><\/script>${htmlAfterMarker}`;
+                let htmlWithJs = `${htmlBeforeMarker}<script src="/JS/api.js"><\/script>${htmlAfterMarker}`;
                 // htmlToJson(htmlWithJs);
 
                 // const myHeaders = new Headers();
